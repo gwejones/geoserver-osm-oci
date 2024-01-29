@@ -1,0 +1,29 @@
+version: '3.9'
+
+services:
+  postgis:
+    image: postgis/postgis
+    ports:
+      - 5432:5432
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=geoserver
+      - POSTGRES_USER=geoserver
+      - POSTGRES_DB=geoserver
+
+  geoserver:
+    image: docker.osgeo.org/geoserver:2.25.x
+    ports:
+      - 8080:8080
+    environment:
+      INSTALL_EXTENSIONS: "true"
+      STABLE_EXTENSIONS: "css"
+    volumes:
+      - gs_data:/opt/geoserver_data
+      - gs_libs:/opt/additional_libs
+
+volumes:
+  pg_data:
+  gs_data:
+  gs_libs:
